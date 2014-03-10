@@ -1,51 +1,50 @@
 function log(m){ console.log(m) }
-//constructor function for creating new cells
-function cell(id) {
+
+function cell(id) {  //constructor function for creating new cells
+
     this.id = id;
-    this.td = document.getElementById(id);
+    this.td = document.getElementById(id);                 //gets the value of the table cell depending on the id given
     this.active = false;
     this.mark = undefined;
-    this.changeColor = function () {
+    this.addMark = function () {                                //add either a naught or a cross
         
         this.td.addEventListener("click", function () {
              
                 
-            if(board["cell" + this.id].active == false){
+            if(board["cell" + this.id].active == false){                // if cell is not active i.e empty
                 
-                board["cell" + this.id].active = true;
-                board.count++;
-                board["cell" + this.id].mark = board.turn();
-                if(board["cell" + this.id].mark == "x"){
+                board["cell" + this.id].active = true;                  //set it to active 
+                board.count++;                                          //adds 1 to count after each turn
+                board["cell" + this.id].mark = board.turn();            //retreives either 'x' or 'o' players turn
+                if(board["cell" + this.id].mark == "x"){                //sets bckground of the table cell to either and x or o accordingly
                     this.style.background = "url(img/x.png) no-repeat";
                 }
-                else{
-                    this.style.background = "url(img/o.png) no-repeat";
-                }
 
-                board.chooseCell();
 
-                if(board.check("o") == true){ board.winMessage("o") }
+                board.chooseCell();                                     //calls the choose cell function 
+
+                if(board.check("o") == true){ board.winMessage("o") }       //passes either x or o into winMessage function
                 else if(board.check("x") == true){ board.winMessage("x") }
 
                
 
             } 
             
-        }) // end event listener
+        }) 
 
-    } //end of method
+    } 
 
-} //end constructor function 
+} 
 
 var board = {
     count: 0,
-    init: function(){                            //constructs all the cells by looping through each one and calling the changeColor constructor function
+    init: function(){                            //constructs all the cells by looping through each one and calling the addMark constructor function
                 for( var i = 1; i < 10; i++ ){
                 board["cell" + i] = new cell(i);
-                board["cell" + i].changeColor();
+                board["cell" + i].addMark();
                 }
             },
-    turn: function(){                             //determains whose turn it is 
+    turn: function(){                             //determains whose turn it is deoending on wether the count is odd or even
             if(this.count %2 == 0){ return "o" }
         else { return "x" }
         },
@@ -54,7 +53,7 @@ var board = {
         if(msg == "o"){ msg = "NAUGHTS" }
             else{ msg = "CROSSES" }
 
-        var node = document.getElementById('win');
+        var node = document.getElementById('win');                  //writes message to the document
         var newNode = document.createElement('h3');
         newNode.appendChild(document.createTextNode(msg + ' WIN!'));
         node.appendChild(newNode);
@@ -93,7 +92,7 @@ var board = {
             else { return false }
 
     },
-    clearBoard: function(){
+    clearBoard: function(){     //loops through each cell setting it's values back to default
         
                 for (var i = 1; i <= 9; i++) {
                     board["cell" + i].td.style.background = '#FFF';
@@ -103,7 +102,7 @@ var board = {
                 board.count = 0;
                 },
 
-    reset: function(){
+    reset: function(){                          //adds an event listener to a button which calls the clearBoard function
         var button = document.getElementById("reset");
         button.addEventListener("click", function(){
         
@@ -111,26 +110,26 @@ var board = {
             })
         },
 
-    chooseCell: function(){ //chooses where to place naught
-        var empty = [];
+    chooseCell: function(){                 //chooses which cell the computer will place the naught                
+        var empty = [];                     //loops through an array of cells nd pushes them to an array if they are empty
         for (var i = 1; i <= 9; i++) {
             if(board["cell" + i].active == false){
                 empty.push(board["cell" + i].id);
             }
         }
-        var rand = empty[Math.floor(Math.random() * empty.length)];
+        var rand = empty[Math.floor(Math.random() * empty.length)];                 //chooses a random empty cell from the array
         board.count++;
         board["cell" + rand].active = true;
         board["cell" + rand].mark = "o";
         
-        setTimeout(function(){ board["cell" + rand].td.style.background = "url(img/o.png) no-repeat"; }, 200);
+        setTimeout(function(){ board["cell" + rand].td.style.background = "url(img/o.png) no-repeat"; }, 200);   //adds naught after a specified time 
 
     }
 
 
     }//end board
 
-board.init();
-board.reset();
+board.init();           //calling the initialize function
+board.reset();          //initializing the event listener on 'RESET' button
 
 
