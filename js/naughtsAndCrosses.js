@@ -9,7 +9,7 @@ function cell(id) {  //constructor function for creating new cells
     this.addMark = function () {                                //add either a naught or a cross
         
         this.td.addEventListener("click", function () {
-             
+            log( board.complete ); 
                 
             if(board["cell" + this.id].active == false){                // if cell is not active i.e empty
                 
@@ -25,8 +25,6 @@ function cell(id) {  //constructor function for creating new cells
 
                 if(board.check("o") == true){ board.winMessage("o") }       //passes either x or o into winMessage function
                 else if(board.check("x") == true){ board.winMessage("x") }
-
-               
 
             } 
             
@@ -49,7 +47,7 @@ var board = {
         else { return "x" }
         },
     winMessage: function(msg){                     //the winning message
-
+        board.complete = true;
         if(msg == "o"){ msg = "NAUGHTS" }
             else{ msg = "CROSSES" }
 
@@ -62,34 +60,60 @@ var board = {
     },
     check:  function(v){                            //determains if there is a line
 
-            if(board.cell1.mark == v && board.cell2.mark == v && board.cell3.mark == v){
-                return true;
-            }
-            else if(board.cell4.mark == v && board.cell5.mark == v && board.cell6.mark === v){
-                return true;
-            }
-            else if(board.cell7.mark == v && board.cell8.mark == v && board.cell9.mark === v){
-                return true;
-            }
+            
+/*                if(board.cell1.mark == v && board.cell2.mark == v && board.cell3.mark == v){
+                    
+                    return true;
+                }
+                else if(board.cell4.mark == v && board.cell5.mark == v && board.cell6.mark === v){
+                   
+                    return true;
+                }
+                else if(board.cell7.mark == v && board.cell8.mark == v && board.cell9.mark === v){
+                   
+                    return true;
+                }
 
 
-            else if(board.cell1.mark == v && board.cell4.mark == v && board.cell7.mark == v){
-                return true;
-            }
-            else if(board.cell2.mark == v && board.cell5.mark == v && board.cell8.mark === v){
-                return true;
-            }
-            else if(board.cell3.mark == v && board.cell6.mark == v && board.cell9.mark === v){
-                return true;
-            }
+                else if(board.cell1.mark == v && board.cell4.mark == v && board.cell7.mark == v){
+                   
+                    return true;
+                }
+                else if(board.cell2.mark == v && board.cell5.mark == v && board.cell8.mark === v){
+                   
+                    return true;
+                }
+                else if(board.cell3.mark == v && board.cell6.mark == v && board.cell9.mark === v){
+                   
+                    return true;
+                }
 
-            else if(board.cell1.mark == v && board.cell5.mark == v && board.cell9.mark === v){
-                return true;
-            }
-            else if(board.cell3.mark == v && board.cell5.mark == v && board.cell7.mark === v){
-                return true;
-            }
-            else { return false }
+                else if(board.cell1.mark == v && board.cell5.mark == v && board.cell9.mark === v){
+                   
+                    return true;
+                }
+                else if(board.cell3.mark == v && board.cell5.mark == v && board.cell7.mark === v){
+            
+                    return true;
+                }
+                else { return false }*/
+
+
+
+            function compare(start, end, add) {                                         //loops through cells between <start> and <end> and checks them for x or o. <add> variable skips over cells 
+                var trues = 0;
+
+                    for( var i = start; i <= end; i+= add ){
+                        if( board["cell" + i].mark == v ){ trues ++}
+                        if( trues == 3 ){  return true }
+                        }
+                }
+
+            var line = compare(1, 3, 1) || compare(3, 6, 1) || compare(7, 9, 1) ||
+                       compare(1, 7, 3) || compare(2, 8, 3) || compare(3, 9, 3) ||
+                       compare(1, 9, 4) || compare(3, 7, 2);
+            return line;
+                
 
     },
     clearBoard: function(){     //loops through each cell setting it's values back to default
@@ -110,21 +134,25 @@ var board = {
             })
         },
 
-    chooseCell: function(){                 //chooses which cell the computer will place the naught                
+    chooseCell: function(){                 //chooses which cell the computer will place the naught
+               
         var empty = [];                     //loops through an array of cells nd pushes them to an array if they are empty
+
         for (var i = 1; i <= 9; i++) {
             if(board["cell" + i].active == false){
                 empty.push(board["cell" + i].id);
             }
         }
+        log(empty);
         var rand = empty[Math.floor(Math.random() * empty.length)];                 //chooses a random empty cell from the array
         board.count++;
+        if( empty.length == 0 ){ log('empty'); return }                             //if the array is empty a function is exited to avoid an error where the function can't find a random empty cell 
         board["cell" + rand].active = true;
         board["cell" + rand].mark = "o";
         
         setTimeout(function(){ board["cell" + rand].td.style.background = "url(img/o.png) no-repeat"; }, 200);   //adds naught after a specified time 
-
-    }
+        }
+    
 
 
     }//end board
