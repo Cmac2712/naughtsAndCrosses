@@ -20,11 +20,16 @@ function cell(id) {  //constructor function for creating new cells
                     this.style.background = "url(img/x.png) no-repeat";
                 }
 
+                if( board.check("o") != true && board.check("x") != true ){         // makes sure the game isnt won before placing a naught
 
-                board.chooseCell();                                     //calls the choose cell function 
+                board.chooseCell();                                     //calls the choose cell function   
+
+                }              
 
                 if(board.check("o") == true){ board.winMessage("o") }       //passes either x or o into winMessage function
                 else if(board.check("x") == true){ board.winMessage("x") }
+
+
 
             } 
             
@@ -135,7 +140,6 @@ var board = {
         },
 
     chooseCell: function(){                 //chooses which cell the computer will place the naught
-               
         var empty = [];                     //loops through an array of cells nd pushes them to an array if they are empty
 
         for (var i = 1; i <= 9; i++) {
@@ -143,14 +147,13 @@ var board = {
                 empty.push(board["cell" + i].id);
             }
         }
-        log(empty);
         var rand = empty[Math.floor(Math.random() * empty.length)];                 //chooses a random empty cell from the array
         board.count++;
-        if( empty.length == 0 ){ log('empty'); return }                             //if the array is empty a function is exited to avoid an error where the function can't find a random empty cell 
+        if( empty.length == 0 ){ return }                             //if the array is empty a function is exited to avoid an error where the function can't find a random empty cell 
         board["cell" + rand].active = true;
         board["cell" + rand].mark = "o";
         
-        setTimeout(function(){ board["cell" + rand].td.style.background = "url(img/o.png) no-repeat"; }, 200);   //adds naught after a specified time 
+        setTimeout( function(){ board["cell" + rand].td.style.background = "url(img/o.png) no-repeat"; }, 200 );   //adds naught after a specified time 
         }
     
 
