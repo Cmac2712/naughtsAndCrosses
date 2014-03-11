@@ -20,24 +20,19 @@ td {
 }
 .btn{
     
-    background-color: #335577;
-    -moz-box-shadow:    2px 2px 0px 1px #446688;
-    -webkit-box-shadow: 2px 2px 0px 1px #446688;
-    box-shadow:         2px 2px 0px 1px #000;
-    color: white  !important;
+    background: #FFF;
+    color: #222  !important;
     text-decoration: none !important;
     padding: 6px 10px;
-    border: none;
+    border: 2px #222 solid;
     width: 75px;
     display: block;
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 .btn:hover{
-    background-color: #64A9CC;
-    -moz-box-shadow:    2px 2px 0px 1px #0075B0;
-    -webkit-box-shadow: 2px 2px 0px 1px #0075B0;
-    box-shadow:         2px 2px 0px 1px #000;
+    background: #222;
+    color: #FFF  !important;
 }
 
 .centre{
